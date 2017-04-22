@@ -1,0 +1,81 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Learn React </title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script src="bower_components/react/react-with-addons.js"></script>
+    <script src="bower_components/react/react-dom.js"></script>
+    <script src="bower_components/babel/browser.js"></script>
+    
+
+    <script type="text/babel">
+
+        var stateRecordMixin = {
+            componentWillMount: function(){
+                this.oldStates = []
+            },
+            componentWillUpdate: function(nextProp, nextState){
+                this.oldStates.push(nextState)
+            },
+            getPreviousState: function() {
+                var index = this.oldStates.length - 1
+                return index == -1 ? {} : this.oldStates[index]
+            }
+        };
+        var MessageBox = React.createClass({
+            mixins: [stateRecordMixin],
+            getInitialState: function(){
+                return {
+                    count: 0
+                }
+            },
+            getDefaultProps: function() {
+            },
+            doUpdate: function() {
+                this.setState({
+                    count: this.state.count + 1
+                })
+                alert('上一次计数: '+ this.getPreviousState().count)
+            },
+            render: function() {
+                return (
+                    <div>
+                        <h1>计数: {this.state.count}</h1>
+                        <button onClick={this.killMySelf}>unmount</button>
+                        <button onClick={this.doUpdate}>update</button>
+                        <Submessage count={this.state.count} />
+                    </div>
+                )
+            }
+        });
+
+        var Submessage = React.createClass({
+            mixins: [stateRecordMixin],
+            getInitialState: function() {
+                return {
+                    count: 0
+                }
+            },
+            componentWillReceiveProps: function(nextProp) {
+                this.setState({
+                    count: this.props.count * 2
+                })
+            },
+            render: function(){
+                console.log('子组件上一次计数: '+ this.getPreviousState().count)
+                return (
+                    <h3>当前子组件计数:  {this.state.count}</h3>
+                )
+            }
+        });
+
+        var messageBox = ReactDOM.render( <MessageBox />,
+        document.getElementById('app'))
+    </script>
+</body>
+
+</html>

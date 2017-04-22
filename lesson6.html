@@ -1,0 +1,116 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Learn React </title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script src="bower_components/react/react.js"></script>
+    <script src="bower_components/react/react-dom.js"></script>
+    <script src="bower_components/babel/browser.js"></script>
+    
+<div id="container">
+    <!-- This element's contents will be replaced with your component. -->
+</div>
+    <script type="text/babel">
+        var FormApp = React.createClass({
+            getInitialState: function() {
+                return {
+                    inputValue: 'input value',
+                    selectValue: 'A',
+                    radioValue: 'B',
+                    textareaValue: 'some text here...',
+                    checkValues: []
+                }
+            } ,
+            handleSubmit: function(e){
+                e.preventDefault();
+                var formData = {
+                    input: this.refs.goodInput.value,
+                    select: this.refs.goodSelect.value,
+                    textarea: this.refs.goodText.value,
+                    radio: this.state.radioValue,
+                    check: this.state.checkValues
+                }
+                console.log(formData)
+                this.refs.goodRadio.saySomething();
+            },
+            handleRadio: function(e) {
+                this.setState({
+                    radioValue: e.target.value
+                })
+            },
+            handleCheck: function(e) {
+                var checkValues = this.state.checkValues.slice();
+                var newVal = e.target.value;
+                var index = checkValues.indexOf(newVal);
+                if (index == -1) {
+                    checkValues.push(newVal);
+                } else {
+                    checkValues.splice(index, 1);
+                }
+                this.setState({
+                    checkValues: checkValues
+                })
+            },
+            render: function() {
+                return (
+                    <form onSubmit={this.handleSubmit}>
+                        <input ref={function(comp){ comp.focus() }} defaultValue={this.state.inputValue}  />
+                        <select ref="goodSelect" defaultValue={this.state.selectValue} >
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                        </select>
+                        <RadioButtons ref="goodRadio" handleRadio={this.handleRadio} />
+                        <br />
+                         <CheckBoxes handleCheck={this.handleRadio} />
+                        <br />
+                        <textarea ref="goodText" defaultValue={this.state.textareaValue} />
+                        <button type="submit">Submit</button>
+                    </form>
+                )
+            }
+        })
+
+        var RadioButtons = React.createClass({
+            saySomething: function() {
+                alert("what's up")
+            },
+            render: function() {
+                return (
+                    <span>
+                        <input onChange={this.props.handleRadio} name="goodRadio" type="radio" value="A" />A
+                        <input onChange={this.props.handleRadio} name="goodRadio" type="radio" value="B"  />B
+                        <input onChange={this.props.handleRadio} name="goodRadio" type="radio" value="C" defaultChecked />C
+                    </span>
+                )
+            }
+        });
+
+        var CheckBoxes = React.createClass({
+            render: function() {
+                return (
+                    <span>
+                        <input onChange={this.props.handleCheck} name="goodRadio" type="checkbox" value="A" />A
+                        <input onChange={this.props.handleCheck} name="goodRadio" type="checkbox" value="B" />B
+                        <input onChange={this.props.handleCheck} name="goodRadio" type="checkbox" value="C" />C
+                    </span>
+                )
+            }
+        });
+
+
+
+        var clickComponent = ReactDOM.render(
+            <FormApp />,
+            document.getElementById('app')
+        )
+    </script>
+</body>
+
+</html>

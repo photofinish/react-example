@@ -1,0 +1,45 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Learn React </title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script src="bower_components/react/react.js"></script>
+    <script src="bower_components/react/react-dom.js"></script>
+    <script src="bower_components/babel/browser.js"></script>
+    
+<div id="container">
+    <!-- This element's contents will be replaced with your component. -->
+</div>
+    <script type="text/babel">
+        var MessageBox = React.createClass({ 
+            getInitialState: function(){
+                return {
+                    isVisible: true,
+                    titleMessage: '你好世界(来自state)',
+                }
+            } ,
+            render: function() {
+                var style = {
+                    display: this.state.isVisible ? 'block' : 'none'
+                }
+
+                return (
+                    <div>
+                        <h1 style={style}>{ this.state.titleMessage }</h1>
+                    </div>
+                )
+            }
+        });
+
+        window.box =  ReactDOM.render(
+            <MessageBox firstName="hello" lastName="world" />, 
+            document.getElementById('app'), () => { console.log('render!') }
+        );
+    </script>
+</body>
+
+</html>

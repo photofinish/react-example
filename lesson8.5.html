@@ -1,0 +1,87 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Learn React </title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script src="bower_components/react/react-with-addons.js"></script>
+    <script src="bower_components/react/react-dom.js"></script>
+    <script src="bower_components/babel/browser.js"></script>
+    
+
+    <script type="text/babel">
+        var MessageBox = React.createClass({
+            getInitialState: function(){
+                return {
+                    count: 0
+                }
+            },
+            getDefaultProps: function() {
+                return {};
+            },
+            componentWillMount: function(){
+              
+            },
+            componentDidMount: function(){
+           
+            },
+            componentWillUnmount: function() {
+
+            },
+            shouldComponentUpdate: function(nextProp, nextState) {
+                console.log('shouldComponentUpdate') 
+                return true
+            },
+            componentWillUpdate: function(nextProp, nextState) {
+                console.log('componentWillUpdate')
+            },
+            componentDidUpdate: function(nextProp, nextState) {
+                console.log('componentDidUpdate')
+            },
+            doUpdate: function() {
+                this.setState({
+                    count: this.state.count + 1
+                })
+            },
+            killMySelf: function() {
+                ReactDOM.unmountComponentAtNode(
+                    document.getElementById('app')
+                )
+            },
+            render: function() {
+                console.log('渲染')
+                return (
+                    <div>
+                        <h1>计数: {this.state.count}</h1>
+                        <button onClick={this.killMySelf}>unmount</button>
+                        <button onClick={this.doUpdate}>update</button>
+                        <Submessage count={this.state.count} />
+                    </div>
+                )
+            }
+        });
+
+        var Submessage = React.createClass({
+            componentWillReceiveProps: function(nextProp) {
+                console.log('componentWillReceiveProps')
+            },
+            shouldComponentUpdate: function(nextProp, nextState){
+                if(nextProp.count > 5) return false;
+                return true;
+            },
+            render: function(){
+                return (
+                    <h3>{this.props.count}</h3>
+                )
+            }
+        });
+
+        var messageBox = ReactDOM.render( <MessageBox />,
+        document.getElementById('app'))
+    </script>
+</body>
+
+</html>

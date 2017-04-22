@@ -1,0 +1,75 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Learn React </title>
+</head>
+
+<body>
+    <div id="app"></div>
+    <script src="bower_components/react/react.js"></script>
+    <script src="bower_components/react/react-dom.js"></script>
+    <script src="bower_components/babel/browser.js"></script>
+    
+<div id="container">
+    <!-- This element's contents will be replaced with your component. -->
+</div>
+    <script type="text/babel">
+        var FormApp = React.createClass({
+            getInitialState: function() {
+                return {
+                    inputValue: 'input value',
+                    selectValue: 'A',
+                    radioValue: 'B',
+                    textareaValue: 'some text here...'
+                }
+            } ,
+            handleInput: function(e) {
+                this.setState({
+                    inputValue: e.target.value,
+                })
+            },
+            handleSelect: function(e) {
+                this.setState({
+                    selectValue: e.target.value,
+                })
+            },
+            handleSubmit: function(e){
+                e.preventDefault();
+                console.log('form submintting..')
+                console.log(e)
+            },
+            render: function() {
+                return (
+                    <form onSubmit={this.handleSubmit}>
+                        <input value={this.state.inputValue} onChange={this.handleInput} />
+                        <select value={this.state.selectValue} onChange={this.handleSelect}>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                            <option value="E">E</option>
+                        </select>
+                        <input name="goodRadio" type="radio" value="A" />
+                        <input name="goodRadio" type="radio" value="B" defaultChecked />
+                        <input name="goodRadio" type="radio" value="C" />
+                        <br />
+                        <input name="goodRadio" type="checkbox" value="A" />
+                        <input name="goodRadio" type="checkbox" value="B" />
+                        <input name="goodRadio" type="checkbox" value="C" defaultChecked />
+                        <br />
+                        <textarea defaultValue={this.state.textareaValue} />
+                        <button type="submit">Submit</button>
+                    </form>
+                )
+            }
+        })
+
+        var clickComponent = ReactDOM.render(
+            <FormApp />,
+            document.getElementById('app')
+        )
+    </script>
+</body>
+
+</html>
